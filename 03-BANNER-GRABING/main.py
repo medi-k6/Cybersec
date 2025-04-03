@@ -1,5 +1,5 @@
 import socket
-import threading
+import concurrent.futures
 
 
 def grab_banner(ip, port):
@@ -19,14 +19,9 @@ def grab_banner(ip, port):
 
 
 def scan_ports(ip, start_port, end_port):
-    threads = []
-    for port in range(start_port, end_port + 1):
-        thread = threading.Thread(target=grab_banner, args=(ip, port))
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+        for port in range(start_port, end_port + 1):
+            executor.submit(grab_banner, ip, port)
 
 
 if __name__ == "__main__":

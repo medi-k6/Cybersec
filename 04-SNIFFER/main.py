@@ -1,5 +1,4 @@
-from scapy.all import sniff, I
-P, TCP, UDP, ARP
+from scapy.all import sniff, IP, TCP, UDP, ARP
 from collections import defaultdict
 import signal
 import sys
